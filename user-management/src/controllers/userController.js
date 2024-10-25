@@ -3,13 +3,26 @@ import { hashedPass } from '../utils/hashPassword.js';
 import { generateToken } from '../utils/jwt.js';
 
 export const register = async (req, res) => {
-  const { email, password, name } = req.body;
+  console.log('Request Body:', req.body); // Log incoming request body
+
+  const { email, password, name, provider } = req.body;
+
+  // Validate required fields
+  if (!email || !provider) {
+    return res.status(400).json({ message: 'Email and provider are required.' });
+  }
+
   try {
-    const hashedPassword = await hashedPass(password);
-    const user = await User.create({ email, password: hashedPassword, name });
+    // Hash password only if provider is "local"
+    const hashedPassword = provider === 'local' ? await hashedPass(password, 10) : null;
+
+    // Create the user
+    const user = await User.create({ email, password: hashedPassword, name, provider });
+
     res.status(201).json({ message: 'User registered successfully', user });
   } catch (error) {
-    res.status(400).json({ message: 'Error registering user', error });
+    console.error('Error registering user:', error);
+    res.status(400).json({ message: 'Error registering user', error: error.message });
   }
 };
 

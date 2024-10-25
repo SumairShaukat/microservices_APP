@@ -1,7 +1,7 @@
-import { DataTypes, UUIDV4 , Sequelize} from "sequelize";
-
-const sequelize = new Sequelize('sqlite::memory:');
-const User = sequelize.define("User", {
+import { DataTypes, UUIDV4 , } from "sequelize";
+import sequelize from "../config/dbConfig.js";
+// const sequelize = new Sequelize('postgres://postgres:1122@localhost:5432/user_management');
+const User =  sequelize.define("User", {
   id: {
     type: DataTypes.UUID,
     defaultValue: UUIDV4,
@@ -13,9 +13,9 @@ const User = sequelize.define("User", {
     unique: true,
   },
 
-  passport: {
+  password: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   name: { type: DataTypes.STRING, allowNull: true },
   provider: { type: DataTypes.ENUM("local", "google", "apple") },

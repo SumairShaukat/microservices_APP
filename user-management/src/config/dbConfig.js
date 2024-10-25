@@ -1,9 +1,15 @@
 import { Sequelize } from 'sequelize';
-import config from './index.js';
+import { dbUrl } from '../config/index.js';
 
-const sequelize = new Sequelize(config.databaseUrl, {
+const sequelize = new Sequelize(dbUrl, {
+  host: 'localhost',
   dialect: 'postgres',
-  logging: false, // Disable logging if you don't want to see SQL queries in the console
+  logging: true
 });
+
+// Test the connection
+sequelize.authenticate()
+  .then(() => console.log('Database connected...'))
+  .catch((err) => console.error('Database connection error:', err));
 
 export default sequelize;

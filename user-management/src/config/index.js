@@ -6,7 +6,7 @@ const loadConfig = () => {
 
   return {
     port: process.env.PORT || 3000,
-    dbUrl: process.env.DATABASE_URL || 'mongodb://localhost:27017/myapp',
+    dbUrl: process.env.DATABASE_URL ,
     jwtSecret: process.env.JWT_SECRET || 'defaultSecret',
     googleClientId: process.env.GOOGLE_CLIENT_ID || '',
     googleSecret: process.env.GOOGLE_CLIENT_SECRET || '',
