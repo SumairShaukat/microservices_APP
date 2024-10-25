@@ -1,4 +1,6 @@
-import { DataTypes, UUIDV4 } from "sequelize";
+import { DataTypes, UUIDV4 , Sequelize} from "sequelize";
+
+const sequelize = new Sequelize('sqlite::memory:');
 const User = sequelize.define("User", {
   id: {
     type: DataTypes.UUID,

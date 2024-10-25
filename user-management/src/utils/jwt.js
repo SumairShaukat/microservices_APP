@@ -1,13 +1,13 @@
 import jwt from 'jsonwebtoken';
-import {config} from '../config'
+import {jwtSecret }from '../config/index.js'
 
 
 
 const generateToken =(userId) => {
-    return jwt.sign({id: userId}, config.jwtSecret, {expiresIn: 60  * 60})
+    return jwt.sign({id: userId}, jwtSecret, {expiresIn: 60  * 60})
 }
 
 const verifyToken = (token) => {
-    return jwt.verify(token, config.jwtSecret,)
+    return jwt.verify(token, jwtSecret,)
 }
 export  {generateToken, verifyToken}

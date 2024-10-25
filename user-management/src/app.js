@@ -1,9 +1,9 @@
 import express from 'express';
-import {config} from './config/index.js'
+import userRoutes from './routes/userRoutes.js';
+
 const app = express();
 
+app.use(express.json());
+app.use('/api/users', userRoutes);
 
-
-app.listen(config.port, () => {
-    console.log(`App is listening on port ${config.port}`)
-})
+export default app;
