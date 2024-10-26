@@ -1,10 +1,12 @@
 import { Sequelize } from 'sequelize';
-import { dbUrl } from '../config/index.js';
-
-const sequelize = new Sequelize(dbUrl, {
+import dotenv from 'dotenv'
+dotenv.config()
+const myconfig = {
+url: process.env.DATABASE_URL
+}
+const sequelize = new Sequelize(myconfig.url, {
   host: 'localhost',
   dialect: 'postgres',
-  logging: true
 });
 
 // Test the connection
@@ -12,4 +14,5 @@ sequelize.authenticate()
   .then(() => console.log('Database connected...'))
   .catch((err) => console.error('Database connection error:', err));
 
+  sequelize.sync({force: true})
 export default sequelize;

@@ -1,6 +1,6 @@
 import User from '../models/userModel.js';
-import { hashedPass } from '../utils/hashPassword.js';
-import { generateToken } from '../utils/jwt.js';
+import { hashedPass, comparePasses } from '../utils/hashPassword.js';
+import { generateToken,  verifyToken } from '../utils/jwt.js';
 
 export const register = async (req, res) => {
   console.log('Request Body:', req.body); // Log incoming request body
@@ -30,7 +30,7 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ where: { email } });
-    if (user && await comparePassword(password, user.password)) {
+    if (user && await comparePasses(password, user.password)) {
       const token = generateToken(user.id);
       res.json({ token });
     } else {

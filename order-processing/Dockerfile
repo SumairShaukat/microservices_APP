@@ -13,6 +13,7 @@ RUN npm install
 # Copy the rest of the application code
 COPY order-processing/ .
 
+WORKDIR /app/src
 # Expose the port (e.g., 3001)
 EXPOSE 3001
 

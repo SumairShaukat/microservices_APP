@@ -1,12 +1,23 @@
-FROM node:20.alpine 
+# User Management Dockerfile
+FROM node:20
 
+# Set the working directory
 WORKDIR /app
 
-COPY package.*json ./
-RUN npm install 
+# Copy package.json and package-lock.json
+COPY user-management/package*.json ./
 
-COPY . .
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY user-management/ .
 
 
-EXPOSE 3300
-CMD ["node", "src/server.js"]
+WORKDIR /app/src
+
+# Expose the port (e.g., 3000)
+EXPOSE 3000
+
+# Start the application
+CMD ["node", "server.js"]

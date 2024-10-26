@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  user-management:
+    build:
+      context: .
+      dockerfile: user-management/Dockerfile
+    ports:
+      - "3000:3000"  # Expose User Management on port 3000
+    environment:
+      - DATABASE_URL=postgres://postgres:1122@db:5432/user_management  # PostgreSQL connection URI
+    depends_on:
+      - db  # Wait for PostgreSQL to start
+
+  db:
+    image: postgres:latest  # Use the official PostgreSQL image
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1122
+      - POSTGRES_DB=user_management
+    volumes:
+      - pg_data:/var/lib/postgresql/data  # Persist data
+
+  order-processing:
+    build:
+      context: .
+      dockerfile: order-processing/Dockerfile
+    ports:
+      - "3001:3001"  # Expose Order Processing on port 3001
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/order_db  # MongoDB connection URI
+      - USER_SERVICE_URL=http://user-management:3000  # URL for User Management Service
+    depends_on:
+      - mongo  # Wait for MongoDB to start
+
+  mongo:
+    image: mongo:latest  # Use the official MongoDB image
+    volumes:
+      - mongo_data:/data/db  # Persist data
+
+volumes:
+  pg_data:
+  mongo_data:
