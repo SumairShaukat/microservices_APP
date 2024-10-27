@@ -4,7 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
-// import errorHandler from './utils/errorHandler.js';
+ import errorHandler from './utils/errorHandler.js';
 
 dotenv.config();
 connectDB();

@@ -1,5 +1,5 @@
 import Product from '../models/productModel.js';
-import cacheService from './services/cacheService.js'
+import cacheService from '../services/cacheService.js'
 
 export const getProducts = async (req, res, next) => {
   try {
