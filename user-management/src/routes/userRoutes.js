@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { register, login } from '../controllers/userController.js';
+import { register, login , getAllUsers} from '../controllers/userController.js';
 import auth from '../middlewares/auth.js';
 import passport from '../config/passport.js';
 
@@ -7,6 +7,7 @@ const router = Router();
 
 router.post('/register', register);
 router.post('/login', login);
+router.get('/getusers', getAllUsers)
 
 // Google authentication routes
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));

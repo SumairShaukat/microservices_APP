@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 const SALT_ROUNDS = 10;
  const hashedPass = async (password) => {
   const salt = await bcrypt.genSalt(SALT_ROUNDS); 

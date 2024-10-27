@@ -40,3 +40,15 @@ export const login = async (req, res) => {
     res.status(400).json({ message: 'Error logging in', error });
   }
 };
+export const getAllUsers = async (req, res) => {
+  try {
+
+      const users = await User.findAll(); 
+      console.log("Users fetched:", users); // Log the fetched users
+      // Fetch all users from the database
+      return res.status(200).json(users); // Respond with a 200 status and the list of users
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Error retrieving users', error }); // Handle any errors
+  }
+};

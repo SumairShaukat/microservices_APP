@@ -2,14 +2,12 @@ import {port} from './config/index.js'
 import express from 'express';
 import userRoutes from './routes/userRoutes.js';
 import sequelize from './config/dbConfig.js';
-import  session  from 'express-session';
 import passport from './config/passport.js';
 const app = express();
 
 app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use(passport.initialize());
-app.use(passport.session());
 
 
 

@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   user-management:
@@ -11,6 +10,8 @@ services:
       - DATABASE_URL=postgres://postgres:1122@db:5432/user_management  # PostgreSQL connection URI
     depends_on:
       - db  # Wait for PostgreSQL to start
+    networks:
+      - ecom_network  # Use the defined network
 
   db:
     image: postgres:latest  # Use the official PostgreSQL image
@@ -18,6 +19,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1122
       - POSTGRES_DB=user_management
+    networks:
+      - ecom_network  # Use the defined network
     volumes:
       - pg_data:/var/lib/postgresql/data  # Persist data
 
@@ -29,15 +32,22 @@ services:
       - "3001:3001"  # Expose Order Processing on port 3001
     environment:
       - MONGO_URI=mongodb://mongo:27017/order_db  # MongoDB connection URI
-      - USER_SERVICE_URL=http://user-management:3000  # URL for User Management Service
+      - USER_SERVICE_URL=http://user-management:3000/api/users/getAllUsers # Updated to use service name instead of localhost
     depends_on:
       - mongo  # Wait for MongoDB to start
+    networks:
+      - ecom_network  # Use the defined network
 
   mongo:
     image: mongo:latest  # Use the official MongoDB image
+    networks:
+      - ecom_network  # Use the defined network
     volumes:
       - mongo_data:/data/db  # Persist data
 
 volumes:
   pg_data:
   mongo_data:
+
+networks:
+  ecom_network:  # Define the network
