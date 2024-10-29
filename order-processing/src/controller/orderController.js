@@ -23,10 +23,18 @@ const createOrder = async (req, res) => {
         if (!userResponse.data) {
             return res.status(404).json({ message: 'User not found' });
         }
-console.log(userResponse.data, 'useeeeeeeeee')
-        // Calculate total amount (you might want to ensure that items have a price field)
-        const totalAmount = items.reduce((total, item) => total + (item.price * item.quantity), 0);
+        const totalAmount = items.reduce((total, item) => {
+            const productPrice = productPrices[item.productId]; // Get the price for the product
+            if (productPrice) {
+                return total + (productPrice * item.quantity);
+            }
+            return total;
+        }, 0);
 
+        // Ensure totalAmount is a number and not NaN
+        if (isNaN(totalAmount) || totalAmount < 0) {
+            return res.status(400).json({ message: 'Invalid total amount' });
+        }
         const newOrder = new Order({ userId, items, totalAmount }); // Adjusted to match your schema
         await newOrder.save();
 

@@ -19,13 +19,33 @@ export const register = async (req, res) => {
     // Create the user
     const user = await User.create({ email, password: hashedPassword, name, provider });
 
+    // Produce a UserRegistered event to Kafka
+    await producer.send({
+      topic: 'user-events',
+      messages: [
+        {
+          key: user.id.toString(), // user ID as key
+          value: JSON.stringify({
+            eventType: 'UserRegistered',
+            data: {
+              userId: user.id,
+              email: user.email,
+              name: user.name,
+              provider: user.provider,
+            },
+          }),
+        },
+      ],
+    });
+
+    console.log('UserRegistered event produced to Kafka successfully.');
+
     res.status(201).json({ message: 'User registered successfully', user });
   } catch (error) {
     console.error('Error registering user:', error);
     res.status(400).json({ message: 'Error registering user', error: error.message });
   }
 };
-
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
